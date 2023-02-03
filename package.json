@@ -1,0 +1,17 @@
+{
+  "name": "gestao-vendas-apirestful-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MateusLeviDev/gestao-vendas-apirestful-node.git",
+  "author": "MateusLeviDev <mateuslevisouzapereira@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.1.2",
+    "typescript": "^4.9.5"
+  }
+}
