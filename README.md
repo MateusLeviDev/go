@@ -37,3 +37,11 @@ yarn tsc --init --rootDir src --outDir build --esModuleInterop --resolveJsonModu
 `allowJs:` Se você estiver convertendo um projeto JavaScript antigo em TypeScript, esta opção permitirá que você inclua arquivos .js no projeto.
 
 `noImplicitAny:` Em arquivos TypeScript, não permita que um tipo seja especificado inexplicitamente. Cada tipo precisa ter um tipo específico ou ser declarado explicitamente any.
+
+### Trabalhando com ts, precisamos de uma build, ou seja, compilar esse arquivo em um js.
+
+```
+yarn tsc
+```
+- criação de pasta build. pega tudo dentro de src será compilado e jogado no build. 
+`node build/server.js`
