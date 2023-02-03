@@ -1,5 +1,8 @@
 # gestao-vendas-apirestful-node
- <p>Aplicação Back-end para gestão de vendas. Criação de cadastros, clientes, pedido de compras e uma completa gestão de usuários.</p>
+ <p>Aplicação Back-end para gestão de vendas para resaurante em  Criação de cadastros, clientes, pedido de compras e uma completa gestão de usuários.
+Principais tecnologias que utilizaremos para desenvolvimento da API: Node.js, Express, Typescript, TypeORM, Postgres através de container Docker, Redis através de container Docker, Amazon S3, Amazon SES, etc.
+
+</p>
  
 ## `Funcioanlidades`
 - Criação de cadastro de produtos
