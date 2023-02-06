@@ -121,4 +121,6 @@ Depois de instalar o `tsconfig-paths`, ajustar o script `dev` no arquivo `packag
 
 Agora, para importar qualquer arquivo no projeto, inicie o caminho com um dos `paths` configurados, usando o `CTRL+SPACE` para usar o autocomplete.
 
+> Observação: ativar "baseUrl": "./", para informar que inicia na raiz. 
+
 
