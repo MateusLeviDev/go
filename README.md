@@ -1,4 +1,7 @@
-# gestao-vendas-apirestful-node
+<p align="center">
+  # gestao-vendas-apirestful-node
+</p>
+
  <p>Aplicação Back-end para gestão de vendas para restaurante local. Principais tecnologias que utilizaremos para desenvolvimento da API: Node.js, Express, Typescript, TypeORM, Postgres através de container Docker, Redis através de container Docker, Amazon S3, Amazon SES.
 <a href="https://www.notion.so/Gest-o-de-vendas-052676e0389749ebbc79cb405f5d2555">Anotações - Notion</a> 
 </p>
