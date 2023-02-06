@@ -6,7 +6,7 @@
 <a href="https://www.notion.so/Gest-o-de-vendas-052676e0389749ebbc79cb405f5d2555">Anotações - Notion</a> 
 </p>
  
-## `Funcioanlidades`
+# `Funcionalidades`
 - Criação de cadastro de produtos
 - Clientes 
 - Completa gestão de users
@@ -17,7 +17,7 @@
 
 ![image](https://user-images.githubusercontent.com/101754313/216619865-349e53f1-0fa0-4152-aaa9-d7345c19250d.png)
 
-# Iniciando projeto 
+# `Iniciando projeto`
 `yarn init -y`
 <br>
 em seguida: `yarn add typescript ts-node-dev @types/node tsconfig-paths -D` [instalação dos primeiros pacotes]
