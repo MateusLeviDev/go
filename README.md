@@ -123,7 +123,8 @@ Agora, para importar qualquer arquivo no projeto, inicie o caminho com um dos `p
 
 > Observação: ativar "baseUrl": "./", para informar que inicia na raiz. 
 
-```yarn add express cors express-async-errors
+```
+yarn add express cors express-async-errors
 ```
 > express-async-error para trabalharmos com requisições assíncronas em casos de tratamento de erro
 
