@@ -128,3 +128,25 @@ yarn add express cors express-async-errors
 ```
 > express-async-error para trabalharmos com requisições assíncronas em casos de tratamento de erro
 
+### Criação de middleware
+
+É o software que se encontra entre o sistema operacional e os aplicativos nele executados. Essencialmente, o middleware funciona como uma camada oculta de tradução, permitindo a comunicação e o gerenciamento de dados para aplicativos distribuídos.
+
+```
+app.use(
+  (error: Error, request: Request, response: Response, next: NextFunction) => {
+    if (error instanceof AppError) {
+      return response.status(error.statudCode).json({
+        status: 'error',
+        message: error.message,
+      });
+    }
+    return response.status(500).json({
+      status: 'error',
+      message: 'Internal server error',
+    });
+    //verificar se o erro é uma instância da clase AppError
+  },
+);
+```
+> Middleware que recebe um error. Se a instância do erro é da classe, uma vez que será usado AppError no serviço, o erro sendo da aplicação aparecerá a mensagem. Agora caso não seja, provavelmente é um erro de fora, portando, status 500, erro desconhecido.
