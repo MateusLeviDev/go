@@ -49,7 +49,7 @@ yarn tsc
 - criação de pasta build. pega tudo dentro de src será compilado e jogado no build. 
 `node build/server.js`
 
-### Estrutura do Projeto
+# `Estrutura do Projeto`
 
 Estrutura de pastas:
 
