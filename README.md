@@ -163,3 +163,15 @@ Basta substituir nas dependências do `package.json`
  - "typeorm": "0.2.29"
  
  Para garantir não haver conflitos, excluir pasta `node_modules` e reinstale usando `yarn` ou `npm install`
+ 
+ # `Docker`
+ Comando para criação de um container, quando não tem em execução. 
+ 
+ - `-e` variável de ambiente do container
+ - `p` definir em qual porta ele rodará em nossa máquina
+ 
+ ```
+ docker run --name postgres -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres 
+ ```
+ 
+
