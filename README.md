@@ -155,11 +155,11 @@ app.use(
 
 # `Nota sobre a versão do TypeORM`
 
-Basta substituir nas dependências do ``package.json
+Basta substituir nas dependências do `package.json`
  - "typeorm": "^0.3.x" 
  
  Por: 
  
  - "typeorm": "0.2.29"
  
- Para garantir não haver conflitos, excluir pasta node_modules e reinstale usando `yarn` ou `npm install`
+ Para garantir não haver conflitos, excluir pasta `node_modules` e reinstale usando `yarn` ou `npm install`
