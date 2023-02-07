@@ -152,3 +152,14 @@ app.use(
 );
 ```
 > Middleware que recebe um error. Se a instância do erro é da classe, uma vez que será usado AppError no serviço, o erro sendo da aplicação aparecerá a mensagem. Agora caso não seja, provavelmente é um erro de fora, portando, status 500, erro desconhecido. 
+
+# `Nota sobre a versão do TypeORM`
+
+Basta substituir nas dependências do package.json`
+ - "typeorm": "^0.3.x" 
+ 
+ Por: 
+ 
+ - "typeorm": "0.2.29"
+ 
+ Para garantir não haver conflitos, excluir pasta node_modules e reinstale usando `yarn` ou `npm install`
