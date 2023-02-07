@@ -169,9 +169,23 @@ Basta substituir nas dependências do `package.json`
  
  - `-e` variável de ambiente do container
  - `p` definir em qual porta ele rodará em nossa máquina
+ - `-d` roda o processo em background e libera o terminal
  
  ```
  docker run --name postgres -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres 
  ```
- 
+
+Na raiz do projeto, deverá ser criada um arquivo `ormconfig.json` para informar os parâmetros necessários para se conectar com o postgres 
+
+```
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "docker",
+  "database": "apivendas"
+}
+
+```
 
