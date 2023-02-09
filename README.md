@@ -10,7 +10,7 @@
 - Criação de cadastro de produtos
 - Clientes 
 - Completa gestão de users
-- Autentição Token JWT 
+- Autenticação Token JWT 
 - Recuperação de email 
 - Atualização de perfil e avatar
 - O `typeORM` permitirá implenetar entidades e repositórios <br>
