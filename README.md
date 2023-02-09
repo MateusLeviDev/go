@@ -188,7 +188,7 @@ Na raiz do projeto, deverá ser criada um arquivo `ormconfig.json` para informar
 }
 
 ```
-# ESTRUTURA TABELA PRODUCTS [MIGRATION DA TABELA PRODUCT]
+# `ESTRUTURA TABELA PRODUCTS [MIGRATION DA TABELA PRODUCT]`
 
 ```
 export class CreateProducts1675810870700 implements MigrationInterface {
@@ -236,5 +236,71 @@ export class CreateProducts1675810870700 implements MigrationInterface {
 - o que a migration faz quando rodamos o comando migration run 
 - <a href="https://typeorm.delightful.studio/interfaces/_query_runner_queryrunner_.queryrunner.html">Documentação QueryRunner - TypeORM</a> 
 
-# ENTIDADE DOS PRODUTOS [CONCEITO DE ENTITIES TYPEORM]
+# `ENTIDADE DOS PRODUTOS [CONCEITO DE ENTITIES TYPEORM]`
 <a href="https://orkhan.gitbook.io/typeorm/docs/entities">Documentação Entities - TypeORM</a> 
+Classe que mapeia para uma tabela de banco de dados (ou coleção ao usar MongoDB). Utiliza padrão de decorator, com esse padrão pode-se att funcionalidades extras, sem precisar ter um código muito verboso.
+
+- e an entity by defining a new class and mark it with @Entity(): 
+
+```
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+
+@Entity()
+export class User {
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column()
+    firstName: string
+
+    @Column()
+    lastName: string
+
+    @Column()
+    isActive: boolean
+}
+```
+
+## `Entidade de Produtos`
+
+`mkdir -p src/modules/products/typeorm/entities`
+
+- Dentro de entities criar arq Product.ts. Lembrando que é no singular, visto que é a de UM produto. 
+
+- Definindo a classe `Product` que vai ser nossa entidade em si
+- Para ser considerada uma entity no typeorm é preciso usar o decorator `Entity` passando o nome da tabela em que ela fará o mapeamento.
+- Em seguida será defindo os att da tabela
+- Na próxima operação, é preciso uma forma de dizer ao type orm qual a config de cada coluna att definida acima, dizendo tb o tipo de informação gerada automáticamente
+
+```
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+@Entity('products')
+class Product {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  name: string;
+
+  @Column('decimal')
+  price: number;
+
+  @Column('int')
+  quantity: number;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+}
+
+export default Product;
+```
