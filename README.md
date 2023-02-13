@@ -306,3 +306,198 @@ export default Product;
 ```
 ## `Conceito de Repositório do TypeORM`
 - <a href="https://typeorm.io/working-with-repository">What is repository - TypeORM</a> 
+Repository is just like EntityManager but its operations are limited to a concrete entity. You can access the repository via EntityManager.
+
+### `Repo de Products`
+ ```
+ import { EntityRepository, Repository } from 'typeorm';
+import Product from '../entities/Product';
+
+@EntityRepository(Product)
+export class ProductRepository extends Repository<Product> {
+  public async findByName(name: string): Promise<Product | undefined> {
+    const product = this.findOne({
+      where: {
+        name,
+      },
+    });
+
+    return product;
+  }
+}
+ ```
+ 
+ ## `Tratamento de Requisições`
+ - CreateProductService: serviço de criação de produto. 
+<p>
+O serivce será uma classe, que vai possuir uma instância do repo e atrvés disso será manipulado os dados
+</p>
+
+```
+import AppError from '@shared/errors/AppError';
+import { getCustomRepository } from 'typeorm';
+import Product from '../typeorm/entities/Product';
+import { ProductRepository } from '../typeorm/repositories/ProductsRepository';
+
+interface IRequest {
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+class CreateProductService {
+  public async execute({ name, price, quantity }: IRequest): Promise<Product> {
+    const productsRepository = getCustomRepository(ProductRepository);
+    const productExist = await productsRepository.findByName(name);
+
+    if (productExist) {
+      throw new AppError('There is already onde product with this name');
+    }
+
+    const product = productsRepository.create({
+      name,
+      price,
+      quantity,
+    });
+
+    await productsRepository.save(product);
+
+    return product;
+  }
+}
+
+export default CreateProductService;
+```
+> Criação do produto, se preocupando em entender as regras de negócio da aplicação. Como mostra, uma regra que não permite o cadastro de um produto com um nome já existente. 
+
+ - ListProductsService 
+<p>
+Listagem de produtos cadastrados na DB
+</p>
+
+```
+import { getCustomRepository } from 'typeorm';
+import Product from '../typeorm/entities/Product';
+import { ProductRepository } from '../typeorm/repositories/ProductsRepository';
+
+class ListProductService {
+  public async execute(): Promise<Product[]> {
+    const productsRepository = getCustomRepository(ProductRepository);
+
+    const products = productsRepository.find();
+
+    return products;
+  }
+}
+
+export default ListProductService;
+```
+- ShowProductsService 
+<p>
+  listando um product específico
+</p>
+
+```
+import AppError from '@shared/errors/AppError';
+import { getCustomRepository } from 'typeorm';
+import Product from '../typeorm/entities/Product';
+import { ProductRepository } from '../typeorm/repositories/ProductsRepository';
+
+interface IRequest {
+  id: string;
+}
+class ShowProductService {
+  public async execute({ id }: IRequest): Promise<Product | undefined> {
+    const productsRepository = getCustomRepository(ProductRepository);
+
+    const product = productsRepository.findOne(id);
+
+    if (!product) {
+      throw new AppError('Product not found.');
+    }
+    return product;
+  }
+}
+
+export default ShowProductService;
+```
+- UpdateProductService 
+<p>
+  update
+</p>
+
+```
+import AppError from '@shared/errors/AppError';
+import { getCustomRepository } from 'typeorm';
+import Product from '../typeorm/entities/Product';
+import { ProductRepository } from '../typeorm/repositories/ProductsRepository';
+
+interface IRequest {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+class UpdateProductService {
+  public async execute({
+    id,
+    name,
+    price,
+    quantity,
+  }: IRequest): Promise<Product> {
+    const productsRepository = getCustomRepository(ProductRepository);
+
+    const product = await productsRepository.findOne(id);
+
+    if (!product) {
+      throw new AppError('Product not found.');
+    }
+
+    const productExist = await productsRepository.findByName(name);
+
+    if (productExist && name !== product.name) {
+      throw new AppError('There is already one product with this name');
+    }
+
+    product.name = name;
+    product.price = price;
+    product.quantity = quantity;
+
+    await productsRepository.save(product);
+
+    return product;
+  }
+}
+
+export default UpdateProductService;
+```
+
+- DeleteProductService 
+<p>
+  delete
+</p>
+
+```
+import AppError from '@shared/errors/AppError';
+import { getCustomRepository } from 'typeorm';
+import { ProductRepository } from '../typeorm/repositories/ProductsRepository';
+
+interface IRequest {
+  id: string;
+}
+class DeleteProductService {
+  public async execute({ id }: IRequest): Promise<void> {
+    const productsRepository = getCustomRepository(ProductRepository);
+
+    const product = await productsRepository.findOne(id);
+
+    if (!product) {
+      throw new AppError('Product not found.');
+    }
+
+    await productsRepository.remove(product);
+  }
+}
+
+export default DeleteProductService;
+```
