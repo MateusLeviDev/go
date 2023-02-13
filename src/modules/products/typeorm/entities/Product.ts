@@ -20,10 +20,10 @@ class Product {
   @Column('int')
   quantity: number;
 
-  @CreateDateColumn
+  @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn
+  @UpdateDateColumn()
   updated_at: Date;
 }
 
