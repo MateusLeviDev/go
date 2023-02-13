@@ -304,3 +304,5 @@ class Product {
 
 export default Product;
 ```
+## `Conceito de Repositório do TypeORM`
+- <a href="https://typeorm.io/working-with-repository">What is repository - TypeORM</a> 
