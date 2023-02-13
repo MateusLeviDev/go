@@ -330,7 +330,7 @@ export class ProductRepository extends Repository<Product> {
  ## `Tratamento de Requisições`
  - CreateProductService: serviço de criação de produto. 
 <p>
-O serivce será uma classe, que vai possuir uma instância do repo e atrvés disso será manipulado os dados
+O service será uma classe, que vai possuir uma instância do repo e atrvés disso será manipulado os dados
 </p>
 
 ```
