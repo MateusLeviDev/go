@@ -330,7 +330,7 @@ export class ProductRepository extends Repository<Product> {
  ## `Tratamento de Requisições`
  - CreateProductService: serviço de criação de produto. 
 <p>
-O service será uma classe, que vai possuir uma instância do repo e atrvés disso será manipulado os dados
+O service será uma classe, que vai possuir uma instância do repo e através disso será manipulado os dados
 </p>
 
 ```
@@ -516,7 +516,7 @@ export default class ProductsController {
   }
 }
 ```
-> dessa forma, é uma maneira mais viável de escalar uma aplicação em execução. Dividindo as responsabilidade, onde cada recurso da aplicação tem ua tarefa e aquilo que ele precisa rfeceber ele passa pro outro. 
+> dessa forma, é uma maneira mais viável de escalar uma aplicação em execução. Dividindo as responsabilidades, onde cada recurso da aplicação tem ua tarefa e aquilo que ele precisa rfeceber ele passa pro outro. 
 
 ## `PRODUCTS ROUTES`
 criando um arquivo de routes para cada módulo. 
