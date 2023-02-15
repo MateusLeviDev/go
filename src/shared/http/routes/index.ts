@@ -1,10 +1,9 @@
 // arquivo principal de rotas(routes)
+import productsRouter from '@modules/products/routes/products.routes';
 import { Router } from 'express';
 
 const routes = Router();
 
-routes.get('/', (resquest, response) => {
-  return response.json({ message: 'Fala, levs' }); //'/' significa que vai pegar a rota raiz
-});
+routes.use('/products', productsRouter);
 
 export default routes;
