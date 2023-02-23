@@ -584,4 +584,26 @@ export default productsRouter;
 //pq importaremos no arq principal que recebe as rotas (index.ts de src)
 ```
 
-<a href="https://medium.com/trainingcenter/o-que-%C3%A9-uuid-porque-us%C3%A1-lo-ad7a66644a2b">Anotações - Notion</a> 
+<a href="https://medium.com/trainingcenter/o-que-%C3%A9-uuid-porque-us%C3%A1-lo-ad7a66644a2b">O que é UUID?</a> 
+
+> Celebrate: Validação de dados, foi implementada pela lib celebrate. 
+> Is a middleware function that wraps the joi validation lib.
+
+<a href="[https://medium.com/trainingcenter/o-que-%C3%A9-uuid-porque-us%C3%A1-lo-ad7a66644a2b](https://www.npmjs.com/package/celebrate)">Celebrate-NPM Doc</a> 
+
+- Fim do ciclo do módulo de produtos. Depois de algumas semanas, pude criar as migrações, entidade, repo, serviços, controller e as rotas. Dessa forma, estabeleceu as estrutura básica do products. 
+
+## `Migration de Users`
+Começo do processo de regras específicas que a aplicação vai demandar. <br>
+criação do módulo de users
+
+> Demanda mais regras, uma vez que será criado perfil de usuário, avatar, troca de senha...
+
+
+```
+TABELA PARA CRIAÇÃO DE USUÁRIOS
+
+
+
+yarn typeorm migration:create -n CreateUsers 
+```
