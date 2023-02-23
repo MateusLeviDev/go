@@ -583,3 +583,5 @@ productsRouter.delete(
 export default productsRouter;
 //pq importaremos no arq principal que recebe as rotas (index.ts de src)
 ```
+
+`<a href:"https://medium.com/trainingcenter/o-que-%C3%A9-uuid-porque-us%C3%A1-lo-ad7a66644a2b">o que é UUID</a>`
