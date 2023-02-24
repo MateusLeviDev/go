@@ -695,7 +695,7 @@ export default User;
 
 ```
 
-## `Repo de Users`
+## `REPO DE USERS`
 Através dele que será feito as operações para manipulação do dados. 
 
 ```
