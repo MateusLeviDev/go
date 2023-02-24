@@ -589,11 +589,11 @@ export default productsRouter;
 > Celebrate: Validação de dados, foi implementada pela lib celebrate. 
 > Is a middleware function that wraps the joi validation lib.
 
-<a href="[https://medium.com/trainingcenter/o-que-%C3%A9-uuid-porque-us%C3%A1-lo-ad7a66644a2b](https://www.npmjs.com/package/celebrate)">Celebrate-NPM Doc</a> 
+<a href="https://www.npmjs.com/package/celebrate">Celebrate-NPM Doc</a> 
 
 - Fim do ciclo do módulo de produtos. Depois de algumas semanas, pude criar as migrações, entidade, repo, serviços, controller e as rotas. Dessa forma, estabeleceu as estrutura básica do products. 
 
-## `Migration de Users`
+## `MIGRATION DE USERS`
 Começo do processo de regras específicas que a aplicação vai demandar. <br>
 criação do módulo de users
 
@@ -654,5 +654,88 @@ public async up(queryRunner: QueryRunner): Promise<void> {
       }),
     );
   }
+```
+
+## `ENTIDADE USER`
+
+```
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+@Entity('users')
+class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  name: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  password: string;
+
+  @Column()
+  avatar: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+}
+
+export default User;
+
+```
+
+## `Repo de Users`
+Através dele que será feito as operações para manipulação do dados. 
+
+```
+import { EntityRepository, Repository } from 'typeorm';
+import User from '../entities/User';
+
+@EntityRepository(User)
+class UsersRepository extends Repository<User> {
+  public async findByName(name: string): Promise<User | undefined> {
+    const user = await this.findOne({
+      where: {
+        name,
+      },
+    });
+
+    return user;
+  }
+
+  public async findById(id: string): Promise<User | undefined> {
+    const user = await this.findOne({
+      where: {
+        id,
+      },
+    });
+
+    return user;
+  }
+
+  public async findByEmail(email: string): Promise<User | undefined> {
+    const user = await this.findOne({
+      where: {
+        email,
+      },
+    });
+
+    return user;
+  }
+}
+
+export default UsersRepository;
+
 ```
 
