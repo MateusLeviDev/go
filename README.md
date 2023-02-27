@@ -843,7 +843,7 @@ O corpo da solicitação pode conter informações úteis para a aplicação, co
 
 No entanto, o request.body não estará disponível por padrão em uma aplicação Node.js. Para acessar os dados da solicitação, é necessário usar um middleware de processamento de corpo (body parsing middleware), como o body-parser, que analisa o corpo da solicitação e a converte em um objeto JavaScript que pode ser acessado pelo request.body.
 
-## `Rotas de Users`
+## `USER ROUTE`
 O arquivo **`routes`** é um componente comum em uma aplicação Node.js que utiliza um padrão de arquitetura Model-View-Controller (MVC). Ele é responsável por mapear as solicitações HTTP recebidas pela aplicação para os controladores apropriados que irão processá-las.
 
 O arquivo **`routes`** é geralmente definido como um módulo separado que é importado e utilizado pelo arquivo principal da aplicação. Esse módulo é responsável por configurar as rotas da aplicação, que são combinações de um método HTTP (por exemplo, GET, POST, PUT, DELETE) e um caminho de URL.
@@ -871,4 +871,28 @@ app.use(function (err, req, res, next) {
 Essa rota indica que, se ocorrer um erro na aplicação, a mensagem "Something broke!" será enviada como resposta HTTP com o status 500 (Erro interno do servidor).
 Em resumo, o arquivo routes é uma parte importante de uma aplicação Node.js que ajuda a definir as rotas da aplicação e a mapear as solicitações HTTP para os controladores apropriados.
 
+```
+import { Router } from 'express';
+import { celebrate, Joi, Segments } from 'celebrate';
+import UsersController from '../controllers/UsersController';
 
+const usersRouter = Router();
+const usersController = new UsersController();
+
+usersRouter.get('/', usersController.index);
+
+usersRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    },
+  }),
+
+  usersController.create,
+);
+export default usersRouter;
+```
+ > lembrar de importar e exportar arquivos. importar no arq principal de rotas `index.ts` da pasta `shared`
