@@ -896,3 +896,22 @@ usersRouter.post(
 export default usersRouter;
 ```
  > lembrar de importar e exportar arquivos. importar no arq principal de rotas `index.ts` da pasta `shared`
+ 
+ ## `Criptografar password`
+ Precisa armazenar a password já criptografada. 
+ 
+ ```
+ yarn add bcryptjs
+ ```
+&
+
+```
+yarn add -D @types/bcryptjs
+```
+> O comando "yarn add -D @types/bcryptjs" é usado para adicionar as definições de tipo TypeScript para a biblioteca "bcryptjs" em um projeto Yarn.
+
+O sinalizador "-D" indica que o pacote deve ser instalado como uma dependência de desenvolvimento. Isso significa que ele não será incluído na construção final de produção do projeto.
+
+O prefixo "@types/" no nome do pacote indica que este é um conjunto de definições de tipo TypeScript para a biblioteca "bcryptjs", o que permite usar a biblioteca em um projeto TypeScript com suporte completo de verificação de tipos e editor.
+
+Em geral, este comando é útil para desenvolvedores que estão construindo um projeto TypeScript que usa a biblioteca "bcryptjs" e desejam garantir que seu código seja bem-tipado e livre de erros relacionados a tipos.
