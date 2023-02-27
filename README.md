@@ -739,3 +739,134 @@ export default UsersRepository;
 
 ```
 
+## `CREATE USER SERVICE`
+Service de criação de usuário
+
+```
+import AppError from '@shared/errors/AppError';
+import { getCustomRepository } from 'typeorm';
+import Product from '../typeorm/entities/Product';
+import { ProductRepository } from '../typeorm/repositories/ProductsRepository';
+
+interface IRequest {
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+class CreateProductService {
+  public async execute({ name, price, quantity }: IRequest): Promise<Product> {}
+}
+
+export default CreateProductService;
+```
+> estrutura básica de qualquer serviço
+
+- email não pode ser repetido por users
+
+```
+import AppError from '@shared/errors/AppError';
+import { getCustomRepository } from 'typeorm';
+import User from '../typeorm/entities/User';
+import UsersRepository from '../typeorm/repositories/UserRepository';
+
+interface IRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
+class CreateUserService {
+  public async execute({ name, email, password }: IRequest): Promise<User> {
+    const usersRepository = getCustomRepository(UsersRepository);
+    //email não pode ser repetido por users
+    const emailExists = await usersRepository.findByEmail(email);
+
+    if (emailExists) {
+      throw new AppError('Emaill address already used.');
+    }
+
+    const user = usersRepository.create({
+      name,
+      email,
+      password,
+    });
+
+    await usersRepository.save(user);
+
+    return user;
+  }
+}
+
+export default CreateUserService;
+```
+## `Users Controllers`
+> Os arquivos de controllers são importantes em um projeto de desenvolvimento web porque eles são responsáveis por lidar com as requisições recebidas pelo servidor e enviar as respostas adequadas de volta ao cliente. Em outras palavras, é o controller que faz a ponte entre a camada de modelo e a camada de visualização em um padrão de arquitetura MVC (Model-View-Controller).
+
+```
+  import { Request, Response } from 'express';
+import CreateUserService from '../services/CreateUserService';
+import ListUserService from '../services/ListUserService';
+
+export default class UsersController {
+  //teremos dois métodos [index: usar o serviço de listagem & create: create user]
+  public async index(request: Request, response: Response): Promise<Response> {
+    const listUser = new ListUserService();
+
+    const users = await listUser.execute();
+
+    return response.json(users);
+  }
+
+  public async create(request: Request, response: Response): Promise<Response> {
+    const { name, email, password } = request.body;
+
+    const createUser = new CreateUserService();
+
+    const user = await createUser.execute({
+      name,
+      email,
+      password,
+    });
+
+    return response.json(user);
+  }
+}
+
+```
+
+> request.body é uma propriedade de um objeto Request em uma aplicação Node.js que contém os dados enviados em uma solicitação HTTP.
+
+Quando um cliente envia uma solicitação HTTP para o servidor, essa solicitação contém informações como o método HTTP usado (por exemplo, GET, POST, PUT, DELETE), a URL da solicitação e os dados da solicitação, que são chamados de corpo (body) da solicitação.
+
+O corpo da solicitação pode conter informações úteis para a aplicação, como parâmetros de pesquisa, informações do formulário HTML ou dados no formato JSON, XML ou outro formato. O request.body é usado para acessar esses dados da solicitação que foram enviados pelo cliente.
+
+No entanto, o request.body não estará disponível por padrão em uma aplicação Node.js. Para acessar os dados da solicitação, é necessário usar um middleware de processamento de corpo (body parsing middleware), como o body-parser, que analisa o corpo da solicitação e a converte em um objeto JavaScript que pode ser acessado pelo request.body.
+
+## Rotas de Users
+O arquivo **`routes`** é um componente comum em uma aplicação Node.js que utiliza um padrão de arquitetura Model-View-Controller (MVC). Ele é responsável por mapear as solicitações HTTP recebidas pela aplicação para os controladores apropriados que irão processá-las.
+
+O arquivo **`routes`** é geralmente definido como um módulo separado que é importado e utilizado pelo arquivo principal da aplicação. Esse módulo é responsável por configurar as rotas da aplicação, que são combinações de um método HTTP (por exemplo, GET, POST, PUT, DELETE) e um caminho de URL.
+
+Por exemplo, uma rota pode ser definida como:
+
+```
+javascriptCopy code
+app.get('/users', userController.getAllUsers);
+
+```
+
+Essa rota indica que a aplicação irá responder a uma solicitação HTTP GET para o caminho de URL /users e irá chamar o método getAllUsers do controlador userController.
+
+O arquivo routes também é responsável por definir a lógica de tratamento de erros para a aplicação. Por exemplo, uma rota de tratamento de erro pode ser definida como:
+```
+javascript
+Copy code
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+```
+
+Essa rota indica que, se ocorrer um erro na aplicação, a mensagem "Something broke!" será enviada como resposta HTTP com o status 500 (Erro interno do servidor).
+Em resumo, o arquivo routes é uma parte importante de uma aplicação Node.js que ajuda a definir as rotas da aplicação e a mapear as solicitações HTTP para os controladores apropriados.
