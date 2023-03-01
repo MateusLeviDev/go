@@ -1,8 +1,8 @@
 <h1 align="center">
   gestao-vendas-apirestful-node
 </h1>
- <p>Backend application for sales management. Creation of registries, clients, purchase orders and a comprehensive user management.</p> <br>
- <p>Aplicação Back-end para gestão de vendas para restaurante local. 
+ <p>EN: Backend application for sales management. Creation of registries, clients, purchase orders and a comprehensive user management.</p> <br>
+ <p>PT-Br: Aplicação Back-end para gestão de vendas para comércio local. 
 <a href="https://www.notion.so/Gest-o-de-vendas-052676e0389749ebbc79cb405f5d2555">Anotações - Notion</a> 
 </p>
 
