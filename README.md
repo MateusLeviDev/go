@@ -915,3 +915,5 @@ O sinalizador "-D" indica que o pacote deve ser instalado como uma dependência 
 O prefixo "@types/" no nome do pacote indica que este é um conjunto de definições de tipo TypeScript para a biblioteca "bcryptjs", o que permite usar a biblioteca em um projeto TypeScript com suporte completo de verificação de tipos e editor.
 
 Em geral, este comando é útil para desenvolvedores que estão construindo um projeto TypeScript que usa a biblioteca "bcryptjs" e desejam garantir que seu código seja bem-tipado e livre de erros relacionados a tipos.
+
+## `CRIANDO SERVIÇO DE AUTENTIFICAÇÃO`
