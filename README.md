@@ -1115,15 +1115,20 @@ export default function isAuthenticated(
   
 > um middleware de autenticação em que é utilizado o token JWT para proteger as rotas do Express.
   
-- O middleware recebe três parâmetros: **`request`**, **`response`** e **`next`**. O parâmetro **`next`** é uma função de callback que permite que a execução prossiga para o próximo middleware ou controlador.
+- O middleware recebe três parâmetros: `request`, `response` e `next`. O parâmetro `next` é uma função de callback que permite que a execução prossiga para o próximo middleware ou controlador.
+  
+- TRY/CATCH: essa verificação pode ocorrer uma falha. Portanto, deve-se capturá-la utilizando o try/catch. Uma verify que não é feita pela aplication, sendo passada por um método da lib jsonwebtoken.
 
 - O middleware primeiro extrai o token do cabeçalho de autorização da solicitação. Se o cabeçalho de autorização não estiver presente, ele lança uma exceção com uma mensagem de erro "JWT Token is missing".
 
 - Se o cabeçalho de autorização estiver presente, o middleware divide o cabeçalho em duas partes: o esquema de autenticação e o token JWT. Ele descarta o esquema de autenticação e armazena o token JWT.
 
-- Em seguida, o middleware verifica se o token JWT é válido usando a função **`verify`** do **`jsonwebtoken`**. Se o token não for válido, ele lança uma exceção com a mensagem de erro "Invalid JWT Token".
+- Em seguida, o middleware verifica se o token JWT é válido usando a função `verify` do `jsonwebtoken`. Se o token não for válido, ele lança uma exceção com a mensagem de erro "Invalid JWT Token".
 
-- Se o token for válido, a função **`next()`** é chamada para permitir que a execução prossiga para o próximo middleware ou controlador.
+- Se o token for válido, a função `next()` é chamada para permitir que a execução prossiga para o próximo middleware ou controlador.
 
 - Em resumo, este middleware é responsável por verificar se o token JWT é válido e permite que as rotas protegidas pelo token sejam acessadas somente por usuários autenticados e autorizados. Se o token não for válido, o middleware bloqueia o acesso às rotas e envia uma mensagem de erro ao cliente.
+  
+  ![image](https://user-images.githubusercontent.com/101754313/222262285-bba130d0-66db-411f-ba87-de538be225aa.png)
+
 
