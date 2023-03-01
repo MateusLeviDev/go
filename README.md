@@ -1005,4 +1005,125 @@ após esse comando é necessário add os types.
 
  
  ![image](https://user-images.githubusercontent.com/101754313/222249712-dba50cd5-7b3a-47ab-944d-7f7761a7a2c1.png)
+  
+  O código que você forneceu cria um objeto chamado token que é gerado usando uma biblioteca de geração de tokens chamada jsonwebtoken. O objeto token é composto por três partes:
+
+Um payload vazio: {}
+Uma chave secreta: 'e5814213ceea650a393034bfdd481d95'
+Algumas opções, incluindo um identificador de usuário (subject) e uma data de validade (expiresIn).
+Esses valores são usados para criar um token que será usado para autenticar o usuário. A chave secreta é usada para criptografar e descriptografar o token e garantir que ele não seja falsificado ou alterado.
+
+O identificador do usuário é adicionado ao token como uma forma de garantir que o token seja exclusivo para aquele usuário específico. A data de validade é usada para garantir que o token expira após um determinado período de tempo (1 dia, neste caso).
+
+O código retorna um objeto contendo o usuário autenticado e o token gerado, que serão usados para autenticar e autorizar o usuário em futuras solicitações de API.
+  
+  
+  
+ ### `session service`
+  
+ ```
+ import AppError from '@shared/errors/AppError';
+import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import { getCustomRepository } from 'typeorm';
+import User from '../typeorm/entities/User';
+import UsersRepository from '../typeorm/repositories/UserRepository';
+
+interface IRequest {
+  email: string;
+  password: string;
+}
+
+interface IResponse {
+  user: User;
+  token: string;
+}
+
+class CreateSessionsService {
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
+    const usersRepository = getCustomRepository(UsersRepository);
+    //email não pode ser repetido por users
+    const user = await usersRepository.findByEmail(email);
+
+    if (!user) {
+      throw new AppError('incorrect email/password combination.', 401);
+    }
+
+    const passwordConfirmed = await compare(password, user.password);
+
+    if (!passwordConfirmed) {
+      throw new AppError('incorrect email/password combination.', 401);
+    }
+
+    const token = sign({}, 'e5814213ceea650a393034bfdd481d95', {
+      subject: user.id, //user autorizado a usar o token
+      expiresIn: '1d',
+    });
+
+    return {
+      user,
+      token,
+    };
+  }
+}
+
+export default CreateSessionsService; 
+ ```
+  
+> um serviço que é responsável por criar uma sessão de usuário, verificando se as credenciais fornecidas são válidas e gerando um token JWT para o usuário autenticado.
+
+O serviço CreateSessionsService contém um método execute, que recebe as informações do usuário (email e senha) como parâmetros e retorna um objeto que contém o usuário autenticado e o token gerado.
+
+No início do método, o serviço obtém uma instância do repositório personalizado UsersRepository usando a função getCustomRepository do TypeORM. Em seguida, o serviço procura um usuário com o email fornecido usando o método findByEmail do repositório. Se o usuário não for encontrado, uma exceção é lançada com uma mensagem de erro.
+
+Se o usuário for encontrado, o serviço verifica se a senha fornecida corresponde à senha armazenada no banco de dados, usando a função compare do bcryptjs. Se as senhas não corresponderem, uma exceção é lançada com uma mensagem de erro.
+
+Se as credenciais do usuário forem válidas, um token JWT é gerado usando a função sign do jsonwebtoken. O objeto de payload é vazio, a chave secreta é fornecida como um argumento e o objeto de opções contém o identificador do usuário e a data de validade do token.
+
+Finalmente, o serviço retorna um objeto que contém o usuário autenticado e o token gerado.
+  
+## `MIDDLEWARE AUTHETICATION PARA PROTEÇÃO DAS ROTAS`
+  
+ ```
+ import AppError from '@shared/errors/AppError';
+import { NextFunction, Request, Response } from 'express';
+import { verify } from 'jsonwebtoken';
+import authConfig from '@config/auth';
+
+export default function isAuthenticated(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+): void {
+  const authHeader = request.headers.authorization;
+
+  if (!authHeader) {
+    throw new AppError('JWT Token is missing');
+  }
+
+  const [, token] = authHeader.split(' ');
+
+  try {
+    const decodeToken = verify(token, authConfig.jwt.secret);
+
+    return next();
+  } catch {
+    throw new AppError('Invalid JWT Token.');
+  }
+} 
+ ```
+  
+> um middleware de autenticação em que é utilizado o token JWT para proteger as rotas do Express.
+  
+- O middleware recebe três parâmetros: **`request`**, **`response`** e **`next`**. O parâmetro **`next`** é uma função de callback que permite que a execução prossiga para o próximo middleware ou controlador.
+
+- O middleware primeiro extrai o token do cabeçalho de autorização da solicitação. Se o cabeçalho de autorização não estiver presente, ele lança uma exceção com uma mensagem de erro "JWT Token is missing".
+
+- Se o cabeçalho de autorização estiver presente, o middleware divide o cabeçalho em duas partes: o esquema de autenticação e o token JWT. Ele descarta o esquema de autenticação e armazena o token JWT.
+
+- Em seguida, o middleware verifica se o token JWT é válido usando a função **`verify`** do **`jsonwebtoken`**. Se o token não for válido, ele lança uma exceção com a mensagem de erro "Invalid JWT Token".
+
+- Se o token for válido, a função **`next()`** é chamada para permitir que a execução prossiga para o próximo middleware ou controlador.
+
+- Em resumo, este middleware é responsável por verificar se o token JWT é válido e permite que as rotas protegidas pelo token sejam acessadas somente por usuários autenticados e autorizados. Se o token não for válido, o middleware bloqueia o acesso às rotas e envia uma mensagem de erro ao cliente.
 
