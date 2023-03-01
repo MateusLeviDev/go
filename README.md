@@ -987,3 +987,22 @@ A sexta linha define a rota POST para o endpoint de sessões. Ela utiliza a fun�
 Por fim, a última linha exporta o Router para que ele possa ser utilizado em outras partes da aplicação.
 
 Em resumo, este trecho de código define a rota POST para o endpoint de sessões de usuários, valida os dados enviados pelo usuário utilizando a biblioteca Celebrate e chama o método create do controlador SessionsController para processar a requisição.
+  
+### `instalação JWT`
+importação da lib. 
+
+`yarn add json web token`
+  
+após esse comando é necessário add os types.
+  
+`yarn add -D @types/jsonwebtoken`
+  
+<br>
+  
+ - Após certeza que os dados dos users estão corretos, será configurado o token. 
+  
+  ![image](https://user-images.githubusercontent.com/101754313/222246426-53508fde-0816-441b-b05f-7034e3b38408.png)
+
+ 
+ ![image](https://user-images.githubusercontent.com/101754313/222249712-dba50cd5-7b3a-47ab-944d-7f7761a7a2c1.png)
+
