@@ -916,4 +916,74 @@ O prefixo "@types/" no nome do pacote indica que este é um conjunto de definiç
 
 Em geral, este comando é útil para desenvolvedores que estão construindo um projeto TypeScript que usa a biblioteca "bcryptjs" e desejam garantir que seu código seja bem-tipado e livre de erros relacionados a tipos.
 
-## `CRIANDO SERVIÇO DE AUTENTIFICAÇÃO`
+## `CRIANDO SERVIÇO DE AUTENTICAÇÃO`
+Recomenda-se o uso do médoto POST http. Uma vez que os dados são verificados e auticados na aplicação. 
+
+- Usar lib json web token, onde será controlado o acesso a determinadas rotas, dessa forma, protegendo com o uso de um token. 
+- Para isso foi criado um service dentro do módulo de users
+
+- Criação de um novo cotroller (sessionsController) e em seguida será implementada na rota post. 
+
+### `controller`
+
+```
+import { Request, Response } from 'express';
+import CreateSessionsService from '../services/CreateSessionsService';
+
+export default class SessionsController {
+  public async create(request: Request, response: Response): Promise<Response> {
+    const { email, password } = request.body;
+
+    const createSession = new CreateSessionsService();
+
+    const user = await createSession.execute({
+      email,
+      password,
+    });
+
+    return response.json(user);
+  }
+}
+```
+> A classe SessionsController é responsável por tratar as requisições HTTP relacionadas à autenticação de um usuário em um sistema, especificamente a criação de uma sessão (login).
+
+O método create é utilizado para criar uma nova sessão. Ele recebe um objeto Request e um objeto Response do Express, que contêm informações da requisição e da resposta HTTP, respectivamente. O método utiliza o serviço CreateSessionsService para criar a sessão e retorna uma resposta JSON contendo o usuário autenticado.
+
+O parâmetro : Promise<Response> indica que o método retorna uma promessa (Promise) que eventualmente será resolvida com uma resposta HTTP.
+
+### `routes`
+
+```
+import { Router } from 'express';
+import { celebrate, Joi, Segments } from 'celebrate';
+import SessionsController from '../controllers/SessionsController';
+
+const sessionsRouter = Router();
+const sessionsController = new SessionsController();
+
+sessionsRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    },
+  }),
+
+  sessionsController.create,
+);
+export default sessionsRouter;
+```
+> código apresentado é responsável por definir as rotas para o endpoint de sessões de usuários em uma aplicação web utilizando o framework Express.js e a biblioteca Celebrate para validação de dados.
+
+Aqui está o que cada linha do código faz:
+
+A primeira linha importa o objeto Router do módulo express.
+A segunda linha importa a função celebrate, a classe Joi e o objeto Segments da biblioteca celebrate. Esses recursos são usados para validar os dados enviados pelo usuário.
+A terceira linha importa o controlador SessionsController que será utilizado para processar as requisições para o endpoint de sessões.
+A quarta linha cria uma instância do Router para definir as rotas do endpoint de sessões.
+A quinta linha cria uma instância do controlador SessionsController.
+A sexta linha define a rota POST para o endpoint de sessões. Ela utiliza a função celebrate para validar os dados do corpo da requisição, especificamente o email e a senha do usuário. Se a validação falhar, um erro será retornado. Se a validação for bem-sucedida, a função create do controlador SessionsController será executada para criar uma nova sessão de usuário.
+Por fim, a última linha exporta o Router para que ele possa ser utilizado em outras partes da aplicação.
+
+Em resumo, este trecho de código define a rota POST para o endpoint de sessões de usuários, valida os dados enviados pelo usuário utilizando a biblioteca Celebrate e chama o método create do controlador SessionsController para processar a requisição.
