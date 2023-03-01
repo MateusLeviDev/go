@@ -17,4 +17,4 @@ sessionsRouter.post(
   sessionsController.create,
 );
 
-export default sessionsController;
+export default sessionsRouter;
