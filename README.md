@@ -8,7 +8,7 @@
 
 #### `Main technologies used for API development.: Node.js, Express, Typescript, TypeORM, Postgres através de container Docker, Redis através de container Docker, Amazon S3, Amazon SES.`
  
-# `Funcionalidades`
+## `Funcionalidades`
 - Criação de cadastro de produtos
 - Clientes 
 - Completa gestão de users
