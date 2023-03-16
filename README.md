@@ -3,7 +3,7 @@
 </h1>
  <p>EN: Backend application for sales management. Creation of registries, clients, purchase orders and a comprehensive user management.</p> <br>
  <p>PT-Br: Aplicação Back-end para gestão de vendas para comércio local. <br> 
-<a href="https://www.notion.so/Gest-o-de-vendas-052676e0389749ebbc79cb405f5d2555">Anotações - Notion</a> 
+<a href="">In-production</a> 
 </p>
 
 #### `Main technologies used for API development.: Node.js, Express, Typescript, TypeORM, Postgres através de container Docker, Redis através de container Docker, Amazon S3, Amazon SES.`
