@@ -1,8 +1,7 @@
 <h1 align="center">
   gestao-vendas-apirestful-node
 </h1>
- <p>EN: Backend application for sales management. Creation of registries, clients, purchase orders and a comprehensive user management.</p> <br>
- <p>PT-Br: Aplicação Back-end para gestão de vendas para comércio local. <br> 
+ <p>Backend application for sales management. Creation of registries, clients, purchase orders and a comprehensive user management.</p> <br>
   <br>
   
 <a href="">[In-production]</a> 
