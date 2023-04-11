@@ -1,3 +1,5 @@
+![Last Commit](https://img.shields.io/github/last-commit/MateusLeviDev/gestao-vendas-apirestful-node)
+
 <h1 align="center">
   gestao-vendas-apirestful-node
 </h1>
