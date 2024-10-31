@@ -73,3 +73,18 @@ func newCard() string {
 - in this case. dont we really just have to declare i and card one time? ppr que usar novamente o :=?
 
 with for loops, every single time that we step through this list of cards, we are really throwing away the previous index and card that had been declared. por isso estamos re-declaring the variables i and card here by using :=
+
+
+- package is a way to organize and encapsulate the code. each package can contain multiple go files and each file belong to one package
+
+- packages: you jave a custom package named math with a go file add.go. you can use this in your main package. importando, por exemplo:
+
+<br>
+
+
+```
+import (
+	"fmt"
+	"path/to/your/package/math" //specify the path to your package
+)
+```
