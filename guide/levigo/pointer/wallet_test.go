@@ -12,7 +12,7 @@ func TestWallet(t *testing.T) {
 	})
 
 	t.Run("withdraw with funds", func(t *testing.T) {
-		wallet := Wallet{Bitcoin(20)}
+		wallet := Wallet{balance: Bitcoin(20)}
 		err := wallet.Withdraw(Bitcoin(10))
 
 		assertBalance(t, wallet, Bitcoin(10))
@@ -21,10 +21,35 @@ func TestWallet(t *testing.T) {
 
 	t.Run("withdraw insufficient funds", func(t *testing.T) {
 		startingBalance := Bitcoin(20)
-		wallet := Wallet{startingBalance}
+		wallet := Wallet{balance: startingBalance}
 		err := wallet.Withdraw(Bitcoin(100))
 
 		assertBalance(t, wallet, startingBalance)
+		assertError(t, err, ErrInsufficientFunds)
+	})
+}
+
+func TestTransferTo(t *testing.T) {
+
+	t.Run("transferTo with funds", func(t *testing.T) {
+		origin := Wallet{Owner("Levi"), Bitcoin(100)}
+		destiny := Wallet{owner: Owner("Maria"), balance: Bitcoin(50)}
+		expectedBalance := Bitcoin(80)
+
+		err := origin.TransferTo(&destiny, 30)
+
+		assertBalance(t, destiny, expectedBalance)
+		assertNoError(t, err)
+	})
+
+	t.Run("transferTo insufficient funds", func(t *testing.T) {
+		startingBalance := Bitcoin(20)
+		origin := Wallet{Owner("Levi"), Bitcoin(20)}
+		destiny := Wallet{owner: Owner("Maria"), balance: Bitcoin(50)}
+
+		err := origin.TransferTo(&destiny, 30)
+
+		assertBalance(t, origin, startingBalance)
 		assertError(t, err, ErrInsufficientFunds)
 	})
 }

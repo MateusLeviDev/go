@@ -7,11 +7,14 @@ import (
 
 type Bitcoin int
 
+type Owner string
+
 func (b Bitcoin) String() string {
 	return fmt.Sprintf("%d BTC", b)
 }
 
 type Wallet struct {
+	owner   Owner
 	balance Bitcoin
 }
 
@@ -32,5 +35,15 @@ func (w *Wallet) Withdraw(amount Bitcoin) error {
 	}
 
 	w.balance -= amount
+	return nil
+}
+
+func (w *Wallet) TransferTo(dest *Wallet, amount Bitcoin) error {
+
+	if amount > w.balance {
+		return ErrInsufficientFunds
+	}
+	w.balance -= amount
+	dest.balance += amount
 	return nil
 }
