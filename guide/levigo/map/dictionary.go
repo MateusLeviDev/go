@@ -63,7 +63,7 @@ func (d Dictionary) Delete(word string) error {
 	case nil:
 		delete(d, word)
 	default:
-		return nil
+		return err
 	}
 
 	return nil
