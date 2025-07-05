@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"sync"
 )
 
 type Bitcoin int
@@ -14,11 +15,18 @@ func (b Bitcoin) String() string {
 }
 
 type Wallet struct {
+	mu      sync.Mutex
 	owner   Owner
 	balance Bitcoin
 }
 
+func NewWallet(owner Owner, balance Bitcoin) *Wallet {
+	return &Wallet{owner: owner, balance: balance}
+}
+
 func (w *Wallet) Deposit(amount Bitcoin) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
 	w.balance += amount
 }
 
@@ -29,7 +37,8 @@ func (w *Wallet) Balance() Bitcoin {
 var ErrInsufficientFunds = errors.New("cannot withdraw, insufficient funds")
 
 func (w *Wallet) Withdraw(amount Bitcoin) error {
-
+	w.mu.Lock()
+	defer w.mu.Unlock()
 	if amount > w.balance {
 		return ErrInsufficientFunds
 	}
@@ -39,7 +48,8 @@ func (w *Wallet) Withdraw(amount Bitcoin) error {
 }
 
 func (w *Wallet) TransferTo(dest *Wallet, amount Bitcoin) error {
-
+	w.mu.Lock()
+	defer w.mu.Unlock()
 	if amount > w.balance {
 		return ErrInsufficientFunds
 	}

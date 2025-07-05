@@ -1,18 +1,38 @@
 package main
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
 
 func TestWallet(t *testing.T) {
 
 	t.Run("deposit", func(t *testing.T) {
-		wallet := Wallet{}
+		wallet := NewWallet("Levi", 0)
 		wallet.Deposit(Bitcoin(10))
 
 		assertBalance(t, wallet, Bitcoin(10))
 	})
 
+	t.Run("test safely concurrent deposit", func(t *testing.T) {
+		wantedCount := 1000
+		wallet := NewWallet("Levi", 0)
+		var wg sync.WaitGroup
+		wg.Add(wantedCount)
+
+		for i := 0; i < wantedCount; i++ {
+			go func() {
+				wallet.Deposit(Bitcoin(1))
+				wg.Done()
+			}()
+		}
+		wg.Wait()
+
+		assertBalance(t, wallet, Bitcoin(1000))
+	})
+
 	t.Run("withdraw with funds", func(t *testing.T) {
-		wallet := Wallet{balance: Bitcoin(20)}
+		wallet := NewWallet("Levi", 20)
 		err := wallet.Withdraw(Bitcoin(10))
 
 		assertBalance(t, wallet, Bitcoin(10))
@@ -20,11 +40,10 @@ func TestWallet(t *testing.T) {
 	})
 
 	t.Run("withdraw insufficient funds", func(t *testing.T) {
-		startingBalance := Bitcoin(20)
-		wallet := Wallet{balance: startingBalance}
+		wallet := NewWallet("Levi", 20)
 		err := wallet.Withdraw(Bitcoin(100))
 
-		assertBalance(t, wallet, startingBalance)
+		assertBalance(t, wallet, Bitcoin(20))
 		assertError(t, err, ErrInsufficientFunds)
 	})
 }
@@ -32,11 +51,12 @@ func TestWallet(t *testing.T) {
 func TestTransferTo(t *testing.T) {
 
 	t.Run("transferTo with funds", func(t *testing.T) {
-		origin := Wallet{Owner("Levi"), Bitcoin(100)}
-		destiny := Wallet{owner: Owner("Maria"), balance: Bitcoin(50)}
+		//origin := Wallet{Owner("Levi"), Bitcoin(100)}
+		origin := NewWallet(Owner("Levi"), Bitcoin(100))
+		destiny := NewWallet(Owner("Maria"), Bitcoin(50))
 		expectedBalance := Bitcoin(80)
 
-		err := origin.TransferTo(&destiny, 30)
+		err := origin.TransferTo(destiny, 30)
 
 		assertBalance(t, destiny, expectedBalance)
 		assertNoError(t, err)
@@ -44,14 +64,24 @@ func TestTransferTo(t *testing.T) {
 
 	t.Run("transferTo insufficient funds", func(t *testing.T) {
 		startingBalance := Bitcoin(20)
-		origin := Wallet{Owner("Levi"), Bitcoin(20)}
-		destiny := Wallet{owner: Owner("Maria"), balance: Bitcoin(50)}
+		origin := NewWallet(Owner("Levi"), Bitcoin(20))
+		destiny := NewWallet(Owner("Maria"), Bitcoin(50))
 
-		err := origin.TransferTo(&destiny, 30)
+		err := origin.TransferTo(destiny, 30)
 
 		assertBalance(t, origin, startingBalance)
 		assertError(t, err, ErrInsufficientFunds)
 	})
+}
+
+func TestBitcoinStringer(t *testing.T) {
+	b := Bitcoin(42)
+	got := b.String()
+	want := "42 BTC"
+
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
 }
 
 func assertNoError(t testing.TB, got error) {
@@ -61,7 +91,7 @@ func assertNoError(t testing.TB, got error) {
 	}
 }
 
-func assertBalance(t testing.TB, wallet Wallet, want Bitcoin) {
+func assertBalance(t testing.TB, wallet *Wallet, want Bitcoin) {
 	t.Helper()
 	got := wallet.Balance()
 
