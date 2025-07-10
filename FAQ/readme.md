@@ -88,3 +88,14 @@ import (
 	"path/to/your/package/math" //specify the path to your package
 )
 ```
+
+---
+
+- create cover file:
+
+`go test -coverprofile=coverage.out`
+
+- so, open a HTML relatory:
+
+` go tool cover -html=coverage.out `
+
