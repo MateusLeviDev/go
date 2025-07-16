@@ -1,0 +1,25 @@
+INFO: 2025/07/16 15:48:06.059442 [kafka_producer_json.go] [line:26] [function:producer.NewProducer] [GoroutineID: 1] Kafka Producer created successfully
+INFO: 2025/07/16 15:48:06.059534 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:06.497782 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:06.497828 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:06.833971 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:06.834007 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:07.157959 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:07.158005 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:07.164983 [utils.go] [line:104] [function:utils.WriteUsersToJSONFile] [GoroutineID: 21] Data successfully written to file resources/files/generated/users.json
+
+INFO: 2025/07/16 15:48:07.509479 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:07.509521 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:07.837265 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:07.837330 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:08.162535 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:08.162577 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:08.494545 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:08.494594 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:08.825324 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:08.825368 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:09.175425 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:09.175600 [kafka_producer_json.go] [line:35] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Starting Batch Production
+INFO: 2025/07/16 15:48:09.510045 [kafka_producer_json.go] [line:58] [function:producer.(*Producer).ProduceBatch] [GoroutineID: 22] Batch production completed
+INFO: 2025/07/16 15:48:09.510086 [main.go] [line:76] [function:main.main.func1.2] [GoroutineID: 22] Sending batches to Kafka took 3.450515736s
+INFO: 2025/07/16 15:48:09.510100 [kafka_producer_json.go] [line:77] [function:producer.(*Producer).Close] [GoroutineID: 1] Closing producer
