@@ -1,0 +1,16 @@
+serviceName: es_service
+
+http:
+  port: ":9999"
+  paymentsPath: /payments
+  summaryPath: /payments-summary
+  healthPath: /health
+
+redis:
+  address: "localhost:6379"
+
+processor:
+  defaultUrl: "http://payment-processor-default:8080"
+  fallbackUrl: "http://payment-processor-fallback:8080"
+
+workers: 2
