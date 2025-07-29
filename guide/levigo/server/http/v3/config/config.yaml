@@ -1,13 +1,13 @@
 serviceName: es_service
 
 http:
-  port: ":9999"
+  port: ":8080"
   paymentsPath: /payments
   summaryPath: /payments-summary
   healthPath: /health
 
 redis:
-  address: "localhost:6379"
+  address: "redis:6379"
 
 processor:
   defaultUrl: "http://payment-processor-default:8080"

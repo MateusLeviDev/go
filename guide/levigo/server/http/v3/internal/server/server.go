@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/MateusLeviDev/config"
-	"github.com/MateusLeviDev/internal/adapters/processor"
 	"github.com/MateusLeviDev/internal/adapters/redis"
 	"github.com/MateusLeviDev/internal/application"
 	payment "github.com/MateusLeviDev/internal/payment/delivery/http"
@@ -27,8 +26,7 @@ func (s *server) Run() error {
 
 	redisClient := redisv9.NewClient(&redisv9.Options{Addr: s.cfg.Redis.Address})
 	repo := redis.NewPaymentRepository(redisClient)
-	processorClient := processor.NewClient(s.cfg.Processor.DefaultURL, s.cfg.Processor.FallbackURL)
-	paymentService := &application.PaymentService{Repo: repo, Processor: processorClient}
+	paymentService := &application.PaymentService{Repo: repo}
 	summaryService := &application.SummaryService{Repo: repo}
 
 	healthCheck := redis.NewHealthCheckService(redisClient)

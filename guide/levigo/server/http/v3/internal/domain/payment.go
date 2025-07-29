@@ -14,11 +14,11 @@ type Payment struct {
 }
 
 type Summary struct {
-	Default  SummaryItem
-	Fallback SummaryItem
+	Default  SummaryItem `json:"default"`
+	Fallback SummaryItem `json:"fallback"`
 }
 
 type SummaryItem struct {
-	TotalRequests int
-	TotalAmount   float64
+	TotalRequests int     `json:"totalRequests"`
+	TotalAmount   float64 `json:"totalAmount"`
 }

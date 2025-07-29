@@ -17,6 +17,7 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("%+v\n", cfg)
+
 	if err := server.NewServer(cfg).Run(); err != nil {
 		log.Fatalf("Failed to start http server: %v", err)
 	}

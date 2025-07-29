@@ -8,7 +8,6 @@ import (
 
 type PaymentService struct {
 	Repo      domain.PaymentRepository
-	Processor domain.ProcessorService
 }
 
 func (s *PaymentService) SubmitPayment(ctx context.Context, payment domain.Payment) error {
