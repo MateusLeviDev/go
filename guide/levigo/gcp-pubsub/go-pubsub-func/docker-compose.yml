@@ -1,0 +1,10 @@
+services:
+  pubsub-emulator:
+    image: google/cloud-sdk:latest
+    volumes:
+      - ./setup_pubsub.sh:/setup_pubsub.sh
+    entrypoint: [ "/bin/bash", "./setup_pubsub.sh" ]
+    environment:
+      - CLOUDSDK_CORE_PROJECT=emulator
+    ports:
+      - "8085:8085"
