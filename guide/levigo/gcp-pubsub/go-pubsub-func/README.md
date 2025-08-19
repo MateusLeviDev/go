@@ -95,3 +95,147 @@ curl -X POST http://localhost:8082/projects/demo-test/topics/send-event-topic \
   }
 }'
 ```
+
+---
+
+```
+HTTP server com graceful shutdown, Pub/Sub Publisher com Drain via WaitGroup, closing gate no handler, evitar Close() duplicado, e aplicar timeouts no servidor.
+
+
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"sync"
+	"syscall"
+	"time"
+
+	"cloud.google.com/go/pubsub"
+)
+
+// Publisher com suporte a Drain
+type Publisher struct {
+	client *pubsub.Client
+	topic  *pubsub.Topic
+
+	wg      sync.WaitGroup
+	closing chan struct{}
+}
+
+func NewPublisher(ctx context.Context, projectID, topicID string) (*Publisher, error) {
+	client, err := pubsub.NewClient(ctx, projectID)
+	if err != nil {
+		return nil, err
+	}
+	return &Publisher{
+		client:  client,
+		topic:   client.Topic(topicID),
+		closing: make(chan struct{}),
+	}, nil
+}
+
+func (p *Publisher) Publish(ctx context.Context, msg *pubsub.Message) error {
+	select {
+	case <-p.closing:
+		// Rejeita novas mensagens após início do shutdown
+		return fmt.Errorf("publisher is shutting down")
+	default:
+	}
+
+	p.wg.Add(1)
+	res := p.topic.Publish(ctx, msg)
+
+	// Tratar resultado de forma assíncrona
+	go func() {
+		defer p.wg.Done()
+		_, err := res.Get(ctx)
+		if err != nil {
+			log.Printf("publish error: %v", err)
+		}
+	}()
+	return nil
+}
+
+// Drain aguarda todas as publicações terminarem
+func (p *Publisher) Drain() {
+	log.Println("Publisher draining...")
+	close(p.closing) // fecha o gate
+	p.wg.Wait()      // espera terminar
+	log.Println("Publisher drained.")
+}
+
+func (p *Publisher) Close() error {
+	p.Drain()
+	p.topic.Stop()
+	return p.client.Close()
+}
+
+func main() {
+	ctx := context.Background()
+
+	// Cria publisher
+	pub, err := NewPublisher(ctx, "meu-projeto", "minha-topic")
+	if err != nil {
+		log.Fatalf("falha ao criar publisher: %v", err)
+	}
+
+	// Handlers
+	mux := http.NewServeMux()
+	mux.HandleFunc("/publish", func(w http.ResponseWriter, r *http.Request) {
+		err := pub.Publish(r.Context(), &pubsub.Message{
+			Data: []byte("hello world"),
+		})
+		if err != nil {
+			http.Error(w, "falha ao publicar: "+err.Error(), http.StatusServiceUnavailable)
+			return
+		}
+		w.WriteHeader(http.StatusAccepted)
+	})
+
+	// HTTP Server com timeouts
+	srv := &http.Server{
+		Addr:              ":8080",
+		Handler:           mux,
+		ReadTimeout:       5 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       120 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
+	}
+
+	// Run server em goroutine
+	go func() {
+		log.Println("Servidor iniciado em :8080")
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("erro no servidor: %v", err)
+		}
+	}()
+
+	// Espera sinal de interrupção
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+
+	<-stop
+	log.Println("Iniciando graceful shutdown...")
+
+	// Timeout de shutdown total
+	ctxShutdown, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	// 1. Para de aceitar novas requisições
+	if err := srv.Shutdown(ctxShutdown); err != nil {
+		log.Printf("erro no shutdown do servidor: %v", err)
+	}
+
+	// 2. Fecha publisher após servidor encerrar
+	if err := pub.Close(); err != nil {
+		log.Printf("erro ao fechar publisher: %v", err)
+	}
+
+	log.Println("Shutdown completo.")
+}
+```
