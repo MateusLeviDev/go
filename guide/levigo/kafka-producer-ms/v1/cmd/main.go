@@ -30,7 +30,7 @@ func (op *OrderPlacer) placeOrder(orderType string, size int) error {
 
 	err := op.p.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{
-			Topic:     &op.topic,
+			Topic:     &op.topic, 
 			Partition: kafka.PartitionAny},
 		Value: []byte(payload)},
 		op.deliveryChan,

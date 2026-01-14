@@ -1,0 +1,8 @@
+serviceName: es_service
+
+producer:
+  bootstrapServers: "localhost:9092"
+  topic: "contract-settled-topic"
+  clientID: "fn-contract-settled-producer"
+
+workers: 2
